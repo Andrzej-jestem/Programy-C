@@ -24,43 +24,52 @@ void sortList(char list[][20], int size)
             }
         }
     }
+}
+
+void showUpdateList(char list[][20], int size)
+{
+    printf("\nAktualna lista:\n");
     printList(list, size);
 }
 
 void changeName( char list[][20], int size)
 {
-    char name[20];
-    int found = 0;
+    if(size > 0)
+    {
+        char name[20];
+        int found = 0;
 
-    do {
-        printf("\nKtore imie chcesz zmienic?: ");
-        scanf(" %s", name);
+        do {
+            printf("\nKtore imie chcesz zmienic?: ");
+          scanf(" %s", name);
 
-        for(int i = 0; i < size; i++)
-        {
-            if(strcmp(name, list[i]) == 0)
+            for(int i = 0; i < size; i++)
             {
-                char newName[20];
-                printf("\nPodaj nowe imie dla %s: ", list[i]);
-                scanf(" %s", newName);
+                if(strcmp(name, list[i]) == 0)
+                {
+                    char newName[20];
+                    printf("\nPodaj nowe imie dla %s: ", list[i]);
+                    scanf(" %s", newName);
 
-                strcpy(list[i], newName);
+                    strcpy(list[i], newName);
 
-                printf("\nAktualna lista:\n");
-                printList(list, size);
+                    showUpdateList(list, size);
 
-                found = 1;
-                break;
-            } 
-        }
+                    found = 1;
+                    break;
+                } 
+            }
 
-        if(!found)
-        { 
-            printf("\nNie ma takiego imienia na liscie\n");
-        }
+            if(!found)
+            { 
+                printf("\nNie ma takiego imienia na liscie\n");
+            }
         
-    } while (!found);   // Powtarzaj dopoki nie znajdziesz imienia
-
+        } while (!found);   // Powtarzaj dopoki nie znajdziesz imienia
+    }
+    else {
+        printf("\nBrak imion na liscie\n");
+    }
 }
 
 void addName(char list[][20], int *size)
@@ -87,17 +96,61 @@ void addName(char list[][20], int *size)
     strcpy(list[*size], newName);
     (*size)++;
 
-    printf("\nAktualna lista:\n");
-    printList(list, *size);
+    showUpdateList(list, *size);
+}
 
-    
+void removeName(char list[][20], int *size)
+{
+    if(*size > 0)
+    {
+        char name[20];
+
+        printf("\nKtore imie chcesz usunac?: ");
+        scanf(" %s", name);
+
+        int found = 0;
+
+        // Jezeli jest takie imie na liscie, przesun wszystkie powyzej o jedna pozycje do gory
+        // zmniejsz size o 1
+        for (int i = 0; i < *size; i++)
+        {
+            if(strcmp(name, list[i]) == 0)
+            {
+                for(int j = i; j < *size-1; j++)
+                {
+                    strcpy(list[j], list[j+1]);
+                }
+                (*size)--;
+                found = 1;
+            }
+        }
+
+        if(!found) 
+        {
+            printf("\nNie ma takiego imienia na liscie\n");
+            return;
+        }
+
+        showUpdateList(list, *size);
+    }
+    else {
+        printf("\nBrak imion na liscie\n");
+    }
+
+}
+
+void removeList(char list[][20], int *size)
+{   
+    *size = 0;
+    // lub w petli for
+    // list[i][0] = \'0';   // ustawia pusty string
+    printf("\nLista zostala wyczyszczona\n");
 }
 
 int main() 
 {
     char list[10][20] = {"Anna", "Maksymilian", "Tomasz", "Mateusz", "Andrzej"};
     int size = 5;
-    char choice;
     int operation;
 
     printf("\n-----Twoja baza imion-----");
@@ -108,7 +161,9 @@ int main()
         printf("1 - wyswietl liste\n");
         printf("2 - dodaj imie\n");
         printf("3 - edytuj imie\n");
-        printf("4 - segreguj liste alfabetycznie\n");
+        printf("4 - usun imie\n");
+        printf("5 - segreguj liste alfabetycznie\n");
+        printf("6 - wyczysc liste\n");
         printf("0 - zakoncz program\n");
     
         printf("Wprowadz numer operacji: ");
@@ -134,7 +189,16 @@ int main()
             break;
 
         case 4:
+            removeName(list, &size);
+            break;
+
+        case 5:
             sortList(list, size);
+            showUpdateList(list, size);
+            break;
+
+        case 6:
+            removeList(list, &size);
             break;
 
         default:
