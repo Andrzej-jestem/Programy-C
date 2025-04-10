@@ -141,10 +141,18 @@ void removeName(char list[][20], int *size)
 
 void removeList(char list[][20], int *size)
 {   
-    *size = 0;
-    // lub w petli for
-    // list[i][0] = \'0';   // ustawia pusty string
-    printf("\nLista zostala wyczyszczona\n");
+    char choice;
+
+    printf("\nCzy na pewno chcesz wyczyscic cala liste? (T/N): ");
+    scanf(" %c", &choice);
+
+    if(choice == 't' || choice == 'T')
+    {
+        *size = 0;
+        // lub w petli for
+        // list[i][0] = \'0';   // ustawia pusty string
+        printf("\nLista zostala wyczyszczona\n");
+    } else return;
 }
 
 int main() 
