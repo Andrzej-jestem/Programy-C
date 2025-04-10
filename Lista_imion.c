@@ -33,7 +33,7 @@ void changeName( char list[][20], int size)
     int found = 0;
 
     do {
-        printf("Ktore imie chcesz zmienic?: ");
+        printf("\nKtore imie chcesz zmienic?: ");
         scanf(" %s", name);
 
         for(int i = 0; i < size; i++)
@@ -41,7 +41,7 @@ void changeName( char list[][20], int size)
             if(strcmp(name, list[i]) == 0)
             {
                 char newName[20];
-                printf("Podaj nowe imie dla %s: ", list[i]);
+                printf("\nPodaj nowe imie dla %s: ", list[i]);
                 scanf(" %s", newName);
 
                 strcpy(list[i], newName);
@@ -56,27 +56,47 @@ void changeName( char list[][20], int size)
 
         if(!found)
         { 
-            printf("Nie ma takiego imienia na liscie\n");
+            printf("\nNie ma takiego imienia na liscie\n");
         }
         
     } while (!found);   // Powtarzaj dopoki nie znajdziesz imienia
 
 }
 
-void startView(char list[][20], int size)
+void addName(char list[][20], int *size)
 {
-    
+    if (*size >= 10)
+    {    
+        printf("\nNie mozna wprowadzic wiecej niz 10 imion!\n");
+        return;
+    }
 
-    printf("---Lista osob--- \n");
-    printList(list, size);
+    char newName[20];
+    printf("Wprowadz nowe imie: ");
+    scanf(" %s", newName);
+
+    for (int i = 0; i < *size; i++)
+    {
+        if(strcmp(newName, list[i]) == 0)
+        {
+            printf("\nNa twojej liscie juz jest takie imie\n");
+            return;
+        }
+    }
+
+    strcpy(list[*size], newName);
+    (*size)++;
+
+    printf("\nAktualna lista:\n");
+    printList(list, *size);
 
     
 }
 
 int main() 
 {
-    char list[][20] = {"Anna", "Maksymilian", "Tomasz", "Mateusz", "Andrzej"};
-    int size = sizeof(list) / sizeof(list[0]);
+    char list[10][20] = {"Anna", "Maksymilian", "Tomasz", "Mateusz", "Andrzej"};
+    int size = 5;
     char choice;
     int operation;
 
@@ -106,7 +126,7 @@ int main()
         break;
 
         case 2:
-            printf("Funkcja dodawania imienia ;)\n");
+            addName(list, &size);
             break;
 
         case 3:
