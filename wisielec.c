@@ -9,7 +9,7 @@
     Jeżeli nie, mówi o tym graczowi i odejmuje szanse
 
     Funkcje:
-    - printWin = jezeli sa jeszcze szanse i nie ma pustych miejsc wyswietl graczowi ze wygral
+    - printResult = jezeli sa jeszcze szanse i nie ma pustych miejsc wyswietl graczowi ze wygral
     - printLose = jezeli szanse sie skonczyly wyswietl graczowi ze przegral
     - resetBoard = czysci zawartosc tabeli
     - printBoard = wyswietl kreski oznaczajace litery w hasle oraz ilosc szans
@@ -40,6 +40,7 @@ void resetBoard();
 void printBoard();
 void checkLetter();
 int checkFreeSpaces();
+int checkIfUsed();
 void printUsed();
 void printResult();
 
@@ -52,7 +53,7 @@ int main()
 
     while (checkFreeSpaces() != 0 && lifes != 0)
     {
-        printf("Remaining lifes: %d\n", lifes);
+        //printf("Remaining lifes: %d\n", lifes);
 
         checkLetter();        
     }
@@ -83,9 +84,17 @@ void printBoard()
 void checkLetter()
 {
     int found = 0;        // found letter flag
-    printf("Enter a letter: ");
-    scanf(" %c", &playerLetter);
-    playerLetter = toupper(playerLetter);
+    
+
+    do
+    {
+        printf("Enter a letter: ");
+        scanf(" %c", &playerLetter);
+        playerLetter = toupper(playerLetter);
+        
+    } while (checkIfUsed());
+    
+
     
     usedLetters[tries] = playerLetter;
     tries++;
@@ -125,6 +134,21 @@ int checkFreeSpaces()
     return freeSpaces;
 }
 
+int checkIfUsed()
+{
+    int ifUsed = 0;
+    for(int i = 0; i < tries; i++)
+    {
+        if(usedLetters[i] == playerLetter)
+        {
+            printf("You already used that letter!\n");
+            ifUsed = 1;
+            break;
+        }
+    }
+    return ifUsed;
+}
+
 void printUsed()
 {
     printf("Used letters: ");
@@ -132,7 +156,7 @@ void printUsed()
     {
         printf("%c ", usedLetters[i]);
     }
-    printf("\n");
+    printf("\n\n");
 }
 
 void printResult()
@@ -140,6 +164,7 @@ void printResult()
     if(checkFreeSpaces() == 0)
     {
         printf("YOU WON!\n");
+        printf("Remaining lifes: %d", lifes);
     }
     else
     {
