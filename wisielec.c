@@ -43,6 +43,7 @@ void resetBoard();
 void printBoard();
 void checkLetter();
 int checkFreeSpaces();
+void sortUsedLetters();
 int checkIfUsed();
 void printUsed();
 void printResult();
@@ -112,10 +113,26 @@ void chooseWord()
     wordLength = strlen(word);
 }
 
+void sortUsedLetters()
+{
+    for(int i = 0; i < tries; i++)
+    {
+        for(int j = 0; j < tries - 1; j++)
+        {
+            if(usedLetters[j] > usedLetters[j+1])
+            {
+                char temp = usedLetters[j];
+                usedLetters[j] = usedLetters[j+1];
+                usedLetters[j+1] = temp;
+            }
+        }
+    }
+}
+
+
 void checkLetter()  
 {
     int found = 0;        // found letter flag
-    
 
     do
     {
@@ -180,6 +197,8 @@ int checkIfUsed()
 
 void printUsed()
 {
+    sortUsedLetters();
+
     printf("Used letters: ");
     for(int i = 0; i < tries; i++)
     {
