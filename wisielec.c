@@ -25,17 +25,20 @@
 
 #include <stdio.h>
 #include <ctype.h>
+#include <string.h>
+#include <time.h>
+#include <stdlib.h>
 
-char board[7];
+char board[20];
+int wordLength;
 char playerLetter = ' ';
 char usedLetters[24];
-char word[7] = {'T', 'R', 'A', 'K', 'T', 'O', 'R'};
+char word[20];
 int tries = 0;
 int lifes = 10;
 
 
-char chooseWord();
-
+void chooseWord();  // wylosuj liczbe -> dla i(0; ilosc linijek) {jezeli (i == wylosowana liczba) to wyswietl ta linijke}
 void resetBoard();
 void printBoard();
 void checkLetter();
@@ -45,16 +48,16 @@ void printUsed();
 void printResult();
 
 
-
 int main()
 {
+    srand(time(0));
+
+    chooseWord();
     resetBoard();
     printBoard();
-
+    
     while (checkFreeSpaces() != 0 && lifes != 0)
     {
-        //printf("Remaining lifes: %d\n", lifes);
-
         checkLetter();        
     }
     printResult();
@@ -64,7 +67,7 @@ int main()
 
 void resetBoard()
 {
-    for(int i = 0; i < 7; i++)
+    for(int i = 0; i < wordLength; i++)
     {
         board[i] = '_';
     }
@@ -73,7 +76,7 @@ void resetBoard()
 void printBoard()
 {
     printf("********************\n");
-    for(int i = 0; i < 7; i++)
+    for(int i = 0; i < wordLength; i++)
     {
         printf("%c ", board[i]);
     }
@@ -81,7 +84,35 @@ void printBoard()
 
 }
 
-void checkLetter()
+void chooseWord()
+{
+    int line = rand() % 20;
+    FILE *pF = fopen("C:\\Users\\mgole\\OneDrive\\Dokumenty\\VS Code_study\\hasla.txt", "r");
+
+    if (pF == NULL)
+    {
+        printf("Error opening file!\n");
+        return;
+    }
+
+    char buffer [20];
+
+    for(int i = 0; i < 20; i++)
+    {
+        fgets(buffer, 20, pF);
+
+        if(line == i)
+        {
+            strcpy(word, buffer);
+        }
+    }
+    fclose(pF);
+
+    word[strcspn(word, "\n")] = '\0';  // usunięcie \n
+    wordLength = strlen(word);
+}
+
+void checkLetter()  
 {
     int found = 0;        // found letter flag
     
@@ -94,12 +125,10 @@ void checkLetter()
         
     } while (checkIfUsed());
     
-
-    
     usedLetters[tries] = playerLetter;
     tries++;
 
-    for(int i = 0; i < 7; i++)
+    for(int i = 0; i < wordLength; i++)
     {
         if(word[i] == playerLetter)
         {
@@ -122,9 +151,9 @@ void checkLetter()
 
 int checkFreeSpaces()
 {
-    int freeSpaces = 7;
+    int freeSpaces = wordLength;
 
-    for(int i = 0; i < 7; i++)
+    for(int i = 0; i < wordLength; i++)
     {
         if(board[i] != '_')
         {
