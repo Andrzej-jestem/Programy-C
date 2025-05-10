@@ -1,0 +1,1 @@
+# Wisielec - gra tekstowa w jezyky C
