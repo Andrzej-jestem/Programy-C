@@ -45,6 +45,7 @@ void sortUsedLetters();
 int checkIfUsed();
 void printUsed();
 void printResult();
+void printHangedMan();
 
 
 int main()
@@ -158,7 +159,8 @@ void checkLetter()
     {
         printf("You missed!\n");
         lifes--;
-        printf("Remaining lifes: %d\n", lifes);
+        //printf("Remaining lifes: %d\n", lifes);
+        printHangedMan();
     }
     printUsed();
     
@@ -215,5 +217,45 @@ void printResult()
     else
     {
         printf("YOU LOST!\n");
+    }
+}
+
+void printHangedMan()
+{
+    switch (lifes)
+    {
+    case 9:
+        printf("\n    ____ ____\n\n");       // floor
+        break;
+    case 8:
+        printf("\n\t|\n\t|\n\t|\n\t|\n    ____|____\n");       // pole
+        break;
+    case 7:
+        printf("\n\t _____\n\t|\n\t|\n\t|\n\t|\n    ____|____\n");      // bar
+        break;
+    case 6:
+        printf("\n\t _____\n\t|     |\n\t|\n\t|\n\t|\n    ____|____\n");      // rope
+        break;
+    case 5:
+        printf("\n\t _____\n\t|     |\n\t|     0\n\t|\n\t|\n    ____|____\n");   // head
+        break;
+    case 4:
+        printf("\n\t _____\n\t|     |\n\t|     0\n\t|     |\n\t|\n    ____|____\n");   // body
+        break;
+    case 3:
+        printf("\n\t _____\n\t|     |\n\t|     0\n\t|    /| \n\t|\n    ____|____\n");   // hand 1
+        break;
+    case 2:
+        printf("\n\t _____\n\t|     |\n\t|     0\n\t|    /|\\ \n\t|\n    ____|____\n");   // hand 1
+        break;
+    case 1:
+        printf("\n\t _____\n\t|     |\n\t|     0\n\t|    /|\\ \n\t|    /\n    ____|____\n");   // leg 1
+        break;
+    case 0:
+        printf("\n\t _____\n\t|     |\n\t|     0\n\t|    /|\\ \n\t|    / \\ \n    ____|____\n");   // leg 1
+        break;
+
+    default:
+        break;
     }
 }
